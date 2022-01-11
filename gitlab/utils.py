@@ -16,7 +16,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import urllib.parse
-from typing import Any, Callable, Dict, Optional, overload, Union
+from typing import Any, Callable, Dict, Optional, Union
 
 import requests
 
@@ -114,39 +114,6 @@ class EncodedId(str):
             raise ValueError(f"Unsupported type received: {type(value)}")
         self.original_str = value
         super().__init__()
-
-
-@overload
-def _url_encode(id: int) -> int:
-    ...
-
-
-@overload
-def _url_encode(id: Union[str, EncodedId]) -> EncodedId:
-    ...
-
-
-def _url_encode(id: Union[int, str, EncodedId]) -> Union[int, EncodedId]:
-    """Encode/quote the characters in the string so that they can be used in a path.
-
-    Reference to documentation on why this is necessary.
-
-    https://docs.gitlab.com/ee/api/index.html#namespaced-path-encoding
-
-    If using namespaced API requests, make sure that the NAMESPACE/PROJECT_PATH is
-    URL-encoded. For example, / is represented by %2F
-
-    https://docs.gitlab.com/ee/api/index.html#path-parameters
-
-    Path parameters that are required to be URL-encoded must be followed. If not, it
-    doesn’t match an API endpoint and responds with a 404. If there’s something in front
-    of the API (for example, Apache), ensure that it doesn’t decode the URL-encoded path
-    parameters.
-
-    """
-    if isinstance(id, (int, EncodedId)):
-        return id
-    return EncodedId(id)
 
 
 def remove_none_from_dict(data: Dict[str, Any]) -> Dict[str, Any]:

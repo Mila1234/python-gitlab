@@ -20,25 +20,6 @@ import json
 from gitlab import utils
 
 
-def test_url_encode():
-    src = "nothing_special"
-    dest = "nothing_special"
-    assert dest == utils._url_encode(src)
-
-    src = "foo#bar/baz/"
-    dest = "foo%23bar%2Fbaz%2F"
-    assert dest == utils._url_encode(src)
-
-    src = "foo%bar/baz/"
-    dest = "foo%25bar%2Fbaz%2F"
-    assert dest == utils._url_encode(src)
-
-    # periods/dots should not be modified
-    src = "docs/README.md"
-    dest = "docs%2FREADME.md"
-    assert dest == utils._url_encode(src)
-
-
 class TestEncodedId:
     def test_init_str(self):
         obj = utils.EncodedId("Hello")
